@@ -1,26 +1,17 @@
-import "dotenv/config";
 import { Redis } from "@upstash/redis";
 
 const redis = Redis.fromEnv();
 
-const cacheKey = "video_testimonials:v1";
-
-async function test() {
+export default async function handler(req, res) {
   try {
-    console.log("Checking Redis...");
+    const cacheKey = "video_testimonials:v1";
 
-    // 1. Check Redis
     const cached = await redis.get(cacheKey);
 
     if (cached) {
-      console.log("CACHE HIT ✅");
-      console.log(cached);
-      return;
+      return res.status(200).json(cached);
     }
 
-    console.log("CACHE MISS ⚠️");
-
-    // 2. Get data from Supabase
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
@@ -35,26 +26,28 @@ async function test() {
     );
 
     if (!response.ok) {
-  const errorText = await response.text();
+      throw new Error(
+        `Supabase request failed: ${response.status}`
+      );
+    }
 
-  console.log("Supabase error:", errorText);
-
-  throw new Error(`Supabase request failed: ${response.status}`);
-}
     const data = await response.json();
 
-    // 3. Save to Redis for 7 days
-    await redis.set(cacheKey, data, {
-      ex: 604800
-    });
+    await redis.set(
+      cacheKey,
+      data,
+      {
+        ex: 604800
+      }
+    );
 
-    console.log("Saved to Redis ✅");
-    console.log(data);
+    return res.status(200).json(data);
 
   } catch (error) {
-    console.error("ERROR ❌");
     console.error(error);
+
+    return res.status(500).json({
+      error: "Failed to load video testimonials"
+    });
   }
 }
-
-test();
