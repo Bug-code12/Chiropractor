@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <title>Upper Cervical Chiropractic in Charlotte, NC</title>
 
@@ -103,23 +104,16 @@
 
     <div class="relative aspect-video w-full bg-black">
 
-     <video
+     <iframe
   id="main-vsl-video"
-  class="absolute inset-0 w-full h-full object-cover"
-  controls
-  autoplay
-  muted
-  playsinline
-  preload="auto"
->
-        <source
-          src="https://dtzwzzjqqgyzwbczzxwc.supabase.co/storage/v1/object/public/patient-videos/WhatsApp%20Video%202026-09-01%20at%206.25.47%20AM.mp4"
-          type="video/mp4"
-        >
-
-        Your browser does not support the video tag.
-      </video>
-
+  class="absolute inset-0 w-full h-full"
+  src="https://www.youtube.com/embed/SV3x-YOc4tI?autoplay=1&mute=1&playsinline=1&rel=0"
+  title="VSL"
+  frameborder="0"
+  allow="autoplay; encrypted-media; picture-in-picture"
+  allowfullscreen
+  referrerpolicy="strict-origin-when-cross-origin"
+></iframe>
     </div>
 
   </div>
@@ -627,55 +621,58 @@
 
       <div class="surface-card overflow-hidden reveal">
         <div class="relative aspect-video w-full bg-ink/5">
-          <video
-            src="vidrev/riverside_img_5143__ aug 26, 2025 001_ray_drury's studio (1).mp4"
-            controls
-            class="w-full h-full object-cover"
-            preload="metadata"
-          >
-            Your browser does not support the video tag.
-          </video>
+          <iframe
+            src="https://www.youtube.com/embed/x1WQ4UokZTA?rel=0"
+            title="Patient video testimonial"
+            class="absolute inset-0 h-full w-full"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
         </div>
         <div class="p-6">
           <div class="stars"></div>
           <p class="mt-3 text-sm font-bold">Jhon</p>
-          <p class="text-xs text-muted-foreground">jhon test</p>
+          <p class="text-xs text-muted-foreground">Dizziness, Tinnitus, Anxiety healed.</p>
         </div>
       </div>
 
       <div class="surface-card overflow-hidden reveal" style="animation-delay: 100ms">
         <div class="relative aspect-video w-full bg-ink/5">
-          <video
-            src="vidrev/Chiropractic Care Charlotte - Nurse Lisa now off all medications!.mp4"
-            controls
-            class="w-full h-full object-cover"
-            preload="metadata"
-          >
-            Your browser does not support the video tag.
-          </video>
+          <iframe
+            src="https://www.youtube.com/embed/s0y6Vv77XV4?rel=0"
+            title="Patient video testimonial"
+            class="absolute inset-0 h-full w-full"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
         </div>
         <div class="p-6">
           <div class="stars"></div>
           <p class="mt-3 text-sm font-bold">Lisa</p>
-          <p class="text-xs text-muted-foreground">lista test</p>
+          <p class="text-xs text-muted-foreground">Dizziness, Tinnitus, Anxiety healed.</p>
         </div>
       </div>
 
       <div class="surface-card overflow-hidden reveal" style="animation-delay: 200ms">
         <div class="relative aspect-video w-full bg-ink/5">
-          <video
-            src="vidrev/Upper Cervical Chiropractor Charlotte.mp4"
-            controls
-            class="w-full h-full object-cover"
-            preload="metadata"
-          >
-            Your browser does not support the video tag.
-          </video>
+          <iframe
+            src="https://www.youtube.com/embed/0wAca8V96C4?rel=0"
+            title="Patient video testimonial"
+            class="absolute inset-0 h-full w-full"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
         </div>
         <div class="p-6">
           <div class="stars"></div>
           <p class="mt-3 text-sm font-bold">Brain</p>
-          <p class="text-xs text-muted-foreground">breain test</p>
+          <p class="text-xs text-muted-foreground">Dr. Drury gave me my life back!</p>
         </div>
       </div>
 
@@ -1189,6 +1186,55 @@
   }
 
 
+  function getYouTubeEmbedURL(videoURL) {
+
+    if (!videoURL) {
+      return "";
+    }
+
+
+    try {
+
+      const parsedURL =
+        new URL(videoURL);
+
+      const hostname =
+        parsedURL.hostname.toLowerCase().replace(/^www\./, "");
+
+      let videoID = "";
+
+
+      if (hostname === "youtu.be") {
+        videoID = parsedURL.pathname.slice(1);
+      } else if (hostname === "youtube.com" || hostname === "youtube-nocookie.com") {
+        if (parsedURL.pathname === "/watch") {
+          videoID = parsedURL.searchParams.get("v") || "";
+        } else if (parsedURL.pathname.startsWith("/shorts/") || parsedURL.pathname.startsWith("/embed/")) {
+          videoID = parsedURL.pathname.split("/")[2] || "";
+        }
+      }
+
+
+      videoID =
+        videoID.split(/[?&#]/)[0];
+
+
+      if (!/^[A-Za-z0-9_-]{11}$/.test(videoID)) {
+        return "";
+      }
+
+
+      return `https://www.youtube.com/embed/${videoID}?rel=0`;
+
+    } catch (error) {
+
+      return "";
+
+    }
+
+  }
+
+
   // =========================================================
   // LOAD VIDEO TESTIMONIALS
   // =========================================================
@@ -1279,12 +1325,23 @@
           `${index * 100}ms`;
 
 
-        card.innerHTML = `
+        const youtubeEmbedURL =
+          getYouTubeEmbedURL(videoURL);
 
-          <div
-            class="relative aspect-video w-full bg-ink/5"
-          >
 
+        const mediaMarkup = youtubeEmbedURL
+          ? `
+            <iframe
+              src="${escapeHTML(youtubeEmbedURL)}"
+              title="${escapeHTML(item.name || "Patient video testimonial")}" 
+              class="absolute inset-0 h-full w-full"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          `
+          : `
             <video
               controls
               playsinline
@@ -1292,10 +1349,18 @@
               class="w-full h-full object-cover"
               src="${escapeHTML(videoURL)}"
             >
-
               Your browser does not support the video tag.
-
             </video>
+          `;
+
+
+        card.innerHTML = `
+
+          <div
+            class="relative aspect-video w-full bg-ink/5"
+          >
+
+            ${mediaMarkup}
 
           </div>
 
@@ -1330,6 +1395,12 @@
 
         const video =
           card.querySelector("video");
+
+
+        if (!video) {
+          container.appendChild(card);
+          return;
+        }
 
 
         video.addEventListener(
