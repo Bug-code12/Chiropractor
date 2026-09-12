@@ -625,8 +625,58 @@
       class="mt-10 sm:mt-12 grid gap-5 sm:gap-6 md:grid-cols-3 max-w-6xl mx-auto"
     >
 
-      <div class="col-span-full text-center text-sm text-muted-foreground">
-        Loading video stories...
+      <div class="surface-card overflow-hidden reveal">
+        <div class="relative aspect-video w-full bg-ink/5">
+          <video
+            src="vidrev/riverside_img_5143__ aug 26, 2025 001_ray_drury's studio (1).mp4"
+            controls
+            class="w-full h-full object-cover"
+            preload="metadata"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="p-6">
+          <div class="stars"></div>
+          <p class="mt-3 text-sm font-bold">Jhon</p>
+          <p class="text-xs text-muted-foreground">jhon test</p>
+        </div>
+      </div>
+
+      <div class="surface-card overflow-hidden reveal" style="animation-delay: 100ms">
+        <div class="relative aspect-video w-full bg-ink/5">
+          <video
+            src="vidrev/Chiropractic Care Charlotte - Nurse Lisa now off all medications!.mp4"
+            controls
+            class="w-full h-full object-cover"
+            preload="metadata"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="p-6">
+          <div class="stars"></div>
+          <p class="mt-3 text-sm font-bold">Lisa</p>
+          <p class="text-xs text-muted-foreground">lista test</p>
+        </div>
+      </div>
+
+      <div class="surface-card overflow-hidden reveal" style="animation-delay: 200ms">
+        <div class="relative aspect-video w-full bg-ink/5">
+          <video
+            src="vidrev/Upper Cervical Chiropractor Charlotte.mp4"
+            controls
+            class="w-full h-full object-cover"
+            preload="metadata"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="p-6">
+          <div class="stars"></div>
+          <p class="mt-3 text-sm font-bold">Brain</p>
+          <p class="text-xs text-muted-foreground">breain test</p>
+        </div>
       </div>
 
     </div>
@@ -936,7 +986,6 @@
   const SUPABASE_ANON_KEY =
     "YOUR_EXISTING_SUPABASE_ANON_KEY";
 
-
   // =========================================================
   // LOAD TEXT TESTIMONIALS
   // =========================================================
@@ -1094,6 +1143,18 @@
     }
 
 
+    // Local video assets
+
+    if (
+      videoURL.startsWith("/") ||
+      videoURL.startsWith("vidrev/")
+    ) {
+
+      return videoURL;
+
+    }
+
+
     // ---------------------------------------------
     // Supabase Storage path
     //
@@ -1175,22 +1236,7 @@
       );
 
 
-      container.innerHTML = "";
-
-
       if (!videos.length) {
-
-        container.innerHTML = `
-
-          <div class="col-span-full text-center">
-
-            <p class="text-sm font-semibold text-muted-foreground">
-              No video stories available.
-            </p>
-
-          </div>
-
-        `;
 
         return;
 
@@ -1204,7 +1250,7 @@
       videos.forEach((item, index) => {
 
         const videoURL =
-          getVideoURL(item.video_url);
+          getVideoURL(item.src || item.video_url);
 
 
         // Skip rows without video URL
@@ -1381,7 +1427,7 @@
       );
 
 
-      container.innerHTML = `
+      container.insertAdjacentHTML("beforeend", `
 
         <div
           class="col-span-full text-center"
@@ -1397,7 +1443,7 @@
 
         </div>
 
-      `;
+  `);
 
     }
 
